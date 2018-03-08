@@ -1,5 +1,10 @@
+__precompile__(true)
+
 module Hangul
 
-# package code goes here
+export Jamo
+export compose, decompose
+
+include("jamo.jl")
 
 end # module

@@ -1,1 +1,4 @@
 # Hangul
+
+ * `compose`
+ * `decompose`
