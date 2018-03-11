@@ -1,7 +1,6 @@
 # module Hangul
 
 # 첫가끝
-
 const Initial = :Initial
 const Peak = :Peak
 const Final = :Final
