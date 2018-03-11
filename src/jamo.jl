@@ -18,8 +18,7 @@ end
 const 빈초성 = Jamo(0x3130)
 const 빈중성 = Jamo(0x3164)
 const 빈종성 = Jamo(0x3130)
-# const 초성채움 = Jamo(0x115F)
-# const 중성채움 = Jamo(0x1160)
+
 const 초성표 = _w"ㄱ ㄲ ㄴ ㄷ ㄸ ㄹ ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ"
 const 중성표 = _w"ㅏ ㅐ ㅑ ㅒ ㅓ ㅔ ㅕ ㅖ ㅗ ㅘ ㅙ ㅚ ㅛ ㅜ ㅝ ㅞ ㅟ ㅠ ㅡ ㅢ ㅣ"
 const 종성표 = vcat([빈종성], _w"ㄱ ㄲ ㄳ ㄴ ㄵ ㄶ ㄷ ㄹ ㄺ ㄻ ㄼ ㄽ ㄾ ㄿ ㅀ ㅁ ㅂ ㅄ ㅅ ㅆ ㅇ ㅈ ㅊ ㅋ ㅌ ㅍ ㅎ")

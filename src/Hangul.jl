@@ -2,9 +2,12 @@ __precompile__(true)
 
 module Hangul
 
-export Jamo
-export compose, decompose
+export compose
 
+export Jamo, decompose
 include("jamo.jl")
+
+export YetJamo, Initial, Peak, Final
+include("yetjamo.jl")
 
 end # module
