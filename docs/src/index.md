@@ -1,6 +1,4 @@
-# Hangul
-
-[![Latest](https://img.shields.io/badge/docs-latest-blue.svg)](https://wookay.github.io/docs/Hangul.jl/)
+# Hangul.jl Documentation
 
 ⌨️  한글 처리
 
