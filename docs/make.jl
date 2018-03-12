@@ -8,7 +8,7 @@ makedocs(
     authors = "WooKyoung Noh",
     pages = Any[
         "Home" => "index.md",
-        "Jamo" => "Jamo.md",
+        "Letter" => "Letter.md",
         "YetJamo" => "YetJamo.md",
     ],
     html_prettyurls = !("local" in ARGS),

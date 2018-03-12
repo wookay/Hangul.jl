@@ -1,16 +1,16 @@
-using Hangul # Jamo Syllable to_char to_syllable
+using Hangul # Jamo Letter Consonant Vowel Syllable DecomposeError to_char to_syllable
 using Test
 
 g = Jamo('ㄱ')
-@test g isa Jamo
+@test g isa Letter{Consonant}
 @test g == 'ㄱ'
 
 o = Jamo('ㅗ')
-@test o isa Jamo
+@test o isa Letter{Vowel}
 @test o == 'ㅗ'
 
 m = Jamo('ㅁ')
-@test m isa Jamo
+@test m isa Letter{Consonant}
 @test m == 'ㅁ'
 
 @test '고' == to_char(Syllable(g, o))
@@ -32,3 +32,10 @@ m = Jamo('ㅁ')
 
 @test_throws DecomposeError to_syllable('ㄳ') # 종성은 DecomposeError
 @test_throws DecomposeError to_syllable('a')
+
+@test Letter{Consonant}('ㄱ') == Jamo('ㄱ') == Jamo(0x3131)
+@test Letter{Vowel}('ㅗ') == Jamo('ㅗ') == Jamo(0x3157)
+
+@test_throws Hangul.LetterError Jamo('a')
+
+@test YetJamo{Initial}(0x1100) == Jamo(0x1100)

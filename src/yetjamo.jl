@@ -2,11 +2,15 @@
 
 # 첫가끝
 const Initial = :Initial
-const Medial = :Medial
-const Final = :Final
+const Medial  = :Medial
+const Final   = :Final
 
 # Hangul Jamo
 primitive type YetJamo{T} <: AbstractChar 32 end
+
+struct YetJamoError <: Exception
+    message::String
+end
 
 struct YetSyllable
     initial::Union{Nothing,YetJamo{Initial}}
@@ -65,6 +69,30 @@ const 초성ㄱ = 0x1100
 const 중성ㅏ = 0x1161
 const 종성ㄱ = 0x11a8
 
+function is_yetjamo(c::Union{UInt16,UInt32})::Bool
+    초성ㄱ <= c <= 0x115f || # ㄱ   ... HCF
+    0xa960 <= c <= 0xa97c || # ㄷㅁ ... ㆆㆆ # Hangul Jamo Extended-A
+    0x1160 <= c <= 0x11a7 || # HJF ... ㅗㅒ
+    0xd7b0 <= c <= 0xd7c6 || # ㅗㅕ... .ㅔ  # Hangul Jamo Extended-B
+    종성ㄱ <= c <= 0x11ff || # ㄱ   ... ㄴㄴ
+    0xd7cb <= c <= 0xd7fb    # ㄴㄹ ... ㅍㅌ  # Hangul Jamo Extended-B 
+end
+
+function YetJamo(c::UInt32)::YetJamo # YetJamoError
+    if 초성ㄱ <= c <= 0x115f || # ㄱ   ... HCF
+       0xa960 <= c <= 0xa97c    # ㄷㅁ ... ㆆㆆ # Hangul Jamo Extended-A
+        YetJamo{Initial}(c)
+    elseif 0x1160 <= c <= 0x11a7 || # HJF ... ㅗㅒ
+           0xd7b0 <= c <= 0xd7c6    # ㅗㅕ... .ㅔ  # Hangul Jamo Extended-B
+        YetJamo{Medial}(c)
+    elseif 종성ㄱ <= c <= 0x11ff || # ㄱ   ... ㄴㄴ
+           0xd7cb <= c <= 0xd7fb    # ㄴㄹ ... ㅍㅌ  # Hangul Jamo Extended-B 
+        YetJamo{Final}(c)
+    else
+        throw(YetJamoError(string(c)))
+    end
+end
+
 function YetSyllable(syl::Syllable)::YetSyllable
     if syl.initial isa Nothing
         초성 = nothing
@@ -84,8 +112,16 @@ function YetSyllable(syl::Syllable)::YetSyllable
     YetSyllable(초성, 중성, 종성)
 end
 
+# 매핑 좀 해줘요
+# 
+#   Hangul Jamo - Range: 1100–11FF
+#   http://www.unicode.org/charts/PDF/U1100.pdf
+#
+#   Hangul Compatibility Jamo - Range: 3130–318F
+#   http://www.unicode.org/charts/PDF/U3130.pdf
+
 function throw_compose_error(ysyl::YetSyllable) # ComposeError
-    throw(ComposeError(string(ysyl)))
+    throw(ComposeError(string("매핑 좀 해줘요 ", ysyl)))
 end
 
 function Syllable(ysyl::YetSyllable)::Syllable # ComposeError
@@ -94,9 +130,9 @@ function Syllable(ysyl::YetSyllable)::Syllable # ComposeError
     else
         인덱스 = Int(ysyl.initial - 초성ㄱ) + 1
         if 1 <= 인덱스 <= 19 # length(초성표)
-            초성 = Jamo(초성표[인덱스])
+            초성 = Letter{Consonant}(초성표[인덱스])
         else
-            throw_compose_error(ysyl)
+            throw_compose_error(ysyl) # 매핑 좀 해줘요
         end
     end
     if ysyl.medial isa Nothing
@@ -104,9 +140,9 @@ function Syllable(ysyl::YetSyllable)::Syllable # ComposeError
     else
         인덱스 = Int(ysyl.medial - 중성ㅏ) + 1
         if 1 <= 인덱스 <= 21 # length(중성표)
-            중성 = Jamo(중성표[인덱스])
+            중성 = Letter{Vowel}(중성표[인덱스])
         else
-            throw_compose_error(ysyl)
+            throw_compose_error(ysyl) # 매핑 좀 해줘요
         end
     end
     if ysyl.final isa Nothing
@@ -114,9 +150,9 @@ function Syllable(ysyl::YetSyllable)::Syllable # ComposeError
     else
         인덱스 = Int(ysyl.final - 종성ㄱ + 1) + 1
         if 1 <= 인덱스 <= 28 # length(종성표)
-            종성 = Jamo(종성표[인덱스])
+            종성 = Letter{Consonant}(종성표[인덱스])
         else
-            throw_compose_error(ysyl)
+            throw_compose_error(ysyl) # 매핑 좀 해줘요
         end
     end
     Syllable(초성, 중성, 종성)
