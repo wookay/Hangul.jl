@@ -4,9 +4,11 @@
 
 ⌨️  한글 처리
 
-### Jamo
- * `compose` -> `Union{Char, Intermediate}`
- * `decompose` -> `Tuple{Jamo, Jamo, Jamo}`
+### Hangul Compatibility Jamo
+ * `Jamo`, `Syllable`
+ * `to_char`
+ * `to_syllable`
 
-### YetJamo{T} 첫가끝
- * `compose` -> `String`
+### Hangul Jamo
+ * 첫가끝 `YetJamo{T}`, `YetSyllable`
+ * `to_string`

@@ -2,12 +2,16 @@ __precompile__(true)
 
 module Hangul
 
-export compose
-
-export Jamo, decompose
+# Hangul Compatibility Jamo
+export Jamo, Syllable
+export ComposeError, DecomposeError
+export to_char, to_syllable
 include("jamo.jl")
 
-export YetJamo, Initial, Peak, Final
+# Hangul Jamo
+export YetJamo, YetSyllable
+export Initial, Medial, Final
+export to_string
 include("yetjamo.jl")
 
 end # module

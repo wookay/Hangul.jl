@@ -1,3 +1,4 @@
-### Jamo
- * `compose` -> `Union{Char, Intermediate}`
- * `decompose` -> `Tuple{Jamo, Jamo, Jamo}`
+### Hangul Compatibility Jamo
+ * `Jamo`, `Syllable`
+ * `to_char`
+ * `to_syllable`

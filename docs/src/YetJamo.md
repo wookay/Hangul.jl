@@ -1,2 +1,3 @@
-### YetJamo{T} 첫가끝
- * `compose` -> `String`
+### Hangul Jamo
+ * 첫가끝 `YetJamo{T}`, `YetSyllable`
+ * `to_string`

@@ -1,38 +1,34 @@
-using Hangul
+using Hangul # Jamo Syllable to_char to_syllable
 using Test
 
-ga = Char('가')
-@test ga isa Char
-@test ga == '가'
+g = Jamo('ㄱ')
+@test g isa Jamo
+@test g == 'ㄱ'
 
-nieun = Jamo('ㄴ')
-@test nieun isa Jamo
-@test nieun == 'ㄴ'
+o = Jamo('ㅗ')
+@test o isa Jamo
+@test o == 'ㅗ'
 
-a = Jamo('ㅏ')
-@test a isa Jamo
-@test a == 'ㅏ'
+m = Jamo('ㅁ')
+@test m isa Jamo
+@test m == 'ㅁ'
 
-import Hangul: 빈초성, 빈중성, 빈종성, Intermediate
-@test '나' == compose(nieun, a)
-@test '나' == compose(nieun, a, 빈종성)
-@test (nieun, a, 빈종성) == decompose('나')
+@test '고' == to_char(Syllable(g, o))
+@test '고' == to_char(Syllable(g, o, nothing))
+@test '곰' == to_char(Syllable(g, o, m))
 
-@test 'ㄱ' == compose(Jamo('ㄱ'), 빈중성, 빈종성)
-@test 'ㅏ' == compose(빈초성, Jamo('ㅏ'), 빈종성)
+@test 'ㄱ' == to_char(Syllable(g, nothing, nothing))
+@test 'ㅗ' == to_char(Syllable(nothing, o, nothing))
+@test 'ㅁ' == to_char(Syllable(nothing, nothing, m))
 
-@test Intermediate(Jamo('ㄱ'), 빈중성, Jamo('ㄴ')) == compose(Jamo('ㄱ'), 빈중성, Jamo('ㄴ'))
-@test Intermediate(빈초성, Jamo('ㅏ'), Jamo('ㄴ')) == compose(빈초성, Jamo('ㅏ'), Jamo('ㄴ'))
-@test Intermediate(빈초성, 빈중성, 'ㄴ') == compose(빈초성, 빈중성, Jamo('ㄴ'))
-@test Intermediate(빈초성, 빈중성, 빈종성) == compose(빈초성, 빈중성, 빈종성)
+@test_throws ComposeError to_char(Syllable(g, nothing, m))
+@test_throws ComposeError to_char(Syllable(nothing, o, m))
+@test_throws ComposeError to_char(Syllable(nothing, nothing, nothing))
 
-@test (nieun, a, 빈종성) == decompose(compose(nieun, a))
-@test (nieun, a, 빈종성) == decompose(compose(nieun, a, 빈종성))
+@test Syllable(g, o, nothing) == to_syllable('고')
+@test Syllable(g, o, m) == to_syllable('곰')
+@test Syllable(g, nothing, nothing) == to_syllable('ㄱ')
+@test Syllable(nothing, o, nothing) == to_syllable('ㅗ')
 
-@test (Jamo('ㄱ'), 빈중성, 빈종성) == decompose(compose(Jamo('ㄱ'), 빈중성, 빈종성))
-@test (빈초성, Jamo('ㅏ'), 빈종성) == decompose(compose(빈초성, Jamo('ㅏ'), 빈종성))
-
-@test (Jamo('ㄱ'), 빈중성, Jamo('ㄴ')) == decompose(compose(Jamo('ㄱ'), 빈중성, Jamo('ㄴ')))
-@test (빈초성, Jamo('ㅏ'), Jamo('ㄴ')) == decompose(compose(빈초성, Jamo('ㅏ'), Jamo('ㄴ')))
-@test (빈초성, 빈중성, 'ㄴ') == decompose(compose(빈초성, 빈중성, Jamo('ㄴ')))
-@test (빈초성, 빈중성, 빈종성) == decompose(compose(빈초성, 빈중성, 빈종성))
+@test_throws DecomposeError to_syllable('ㄳ') # 종성은 DecomposeError
+@test_throws DecomposeError to_syllable('a')
