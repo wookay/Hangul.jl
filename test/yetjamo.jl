@@ -45,4 +45,7 @@ iㅿ = YetJamo(0x1140)  # ㅿ U+1140
 @test YetJamo('ᅀ') == YetJamo(0x1140) == YetJamo{Initial}(0x1140) # ㅿ U+1140
 
 @test_throws Hangul.YetJamoError YetJamo(0)
+@test_throws Hangul.YetJamoError YetJamo('a')
 @test_throws Hangul.YetJamoError YetJamo('ㄱ') # 0x3131
+
+@test YetJamo{Initial}(0x1100) == YetJamo(0x1100) == YetJamo('ᄀ') == Jamo(0x1100) == Jamo('ᄀ')

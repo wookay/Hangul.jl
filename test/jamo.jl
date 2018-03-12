@@ -37,5 +37,3 @@ m = Jamo('ㅁ')
 @test Letter{Vowel}('ㅗ') == Jamo('ㅗ') == Jamo(0x3157)
 
 @test_throws Hangul.LetterError Jamo('a')
-
-@test YetJamo{Initial}(0x1100) == Jamo(0x1100)

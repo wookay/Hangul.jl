@@ -31,7 +31,10 @@ Syllable(i::Union{Nothing,Letter{Consonant}}, m::Union{Nothing,Letter{Vowel}}) =
 Letter{T}(c::UInt32) where T = reinterpret(Letter{T}, c)
 Base.codepoint(l::Letter{T}) where T = reinterpret(UInt32, l)
 
-function Jamo(c::Char)::Letter # LetterError
+"""
+    Jamo
+"""
+function Jamo(c::Char)::Union{Letter,YetJamo} # LetterError
     Jamo(codepoint(c))
 end
 
