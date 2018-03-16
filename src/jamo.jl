@@ -70,7 +70,7 @@ const 초성오프셋 = 588 # length(중성표) * 중성오프셋  # 21 * 28
 const 가 = 0xac00 # codepoint('가')
 const 힣 = 0xd7a3 # codepoint('힣')
 
-indexof(순서::Vector{Letter{T}}, 소리::Letter{T}) where T = findall(occursin(소리), 순서)[1]
+indexof(순서::Vector{Letter{T}}, 소리::Letter{T}) where T = findall(in(소리), 순서)[1]
 
 function throw_compose_error(syl::Syllable) # ComposeError
     throw(ComposeError(string(syl)))
