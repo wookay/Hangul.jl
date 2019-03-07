@@ -1,0 +1,11 @@
+name = "Hangul"
+uuid = "4a3431d2-40ed-11e9-0f27-4ba9bf6112e5"
+authors = ["WooKyoung Noh <wookay.noh@gmail.com>"]
+version = "0.1.0"
+
+[extras]
+Jive = "ba5e3d4b-8524-549f-bc71-e76ad9e9deed"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test", "Jive"]
